@@ -10,6 +10,7 @@ Game game = new Game();
 
 game.startGame();
 
+        System.out.println();
 //testCommintChanges
 
 
