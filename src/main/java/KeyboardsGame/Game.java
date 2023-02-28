@@ -3,8 +3,7 @@ package KeyboardsGame;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
+
 import java.util.stream.Collectors;
 
 public class Game {
@@ -39,11 +38,10 @@ public class Game {
         createPlayers();
 
 
-
         System.out.println("Players created:");
         for (Team team :
                 teams) {
-            System.out.println("In team "+team.getName()+":");
+            System.out.println("In team " + team.getName() + ":");
             for (Player player :
                     team.getPlayers()) {
 
@@ -58,7 +56,6 @@ public class Game {
         System.out.println("You get 2 words per category!");
 
 
-
         playersWriteWords();
 
         fillTheBolw();
@@ -68,19 +65,19 @@ public class Game {
     private void createPlayers() {
         for (Team team :
                 teams) {
-            System.out.printf("How many players will there be in %s?%n",team.getName());
+            System.out.printf("How many players will there be in %s?%n", team.getName());
             int playersInTeam = Integer.parseInt(scanner.nextLine());
-            Player player=null;
+            Player player = null;
             for (int i = 0; i < playersInTeam; i++) {
                 System.out.println("Please write one player name then hit Enter");
 
                 String playerName = scanner.nextLine();
+                player = new Player(playerName);
 
-                 player =new Player(playerName);
 
                 players.add(player);
 
-//                team.addPlayer(player);
+                team.addPlayer(player);
 
             }
 
@@ -112,14 +109,39 @@ public class Game {
 
     private void playersWriteWords() {
 
+        String[] categoriesArr = {"Animals", "Place", "Object", "Celebrity", "Movies/Series"};
 
         for (Team team :
                 teams) {
 
             for (Player player : team.getPlayers()) {
-                String wordToAdd = scanner.nextLine();
-                player.addWordToList(wordToAdd);
+                for (int category = 0; category < categoriesArr.length; category++) {
+                    System.out.printf("Category is: %s%n", categoriesArr[category]);
+                    for (int i = 0; i < 2; i++) {
 
+                        System.out.println("Please write your word and press Enter");
+                        String wordToAdd = scanner.nextLine();
+                        player.addWordToList(wordToAdd);
+                    }
+                }
+                System.out.println(player);
+                System.out.printf("%s, are you ready to proceed with the next player?%n", player.getName());
+                String command = scanner.nextLine();
+
+                if (!command.equals("YES!")) {
+                    String commandType = scanner.nextLine();
+
+                    if ("Remove word".equals(commandType)) {
+                        String wordToRemove = scanner.nextLine();
+
+                        player.removeWordFromList(wordToRemove);
+
+                        System.out.println("What word will replace it?");
+                        String wordToReplace = scanner.nextLine();
+                        player.addWordToList(wordToReplace);
+                    }
+                }
+                System.out.println(player);
             }
         }
 
