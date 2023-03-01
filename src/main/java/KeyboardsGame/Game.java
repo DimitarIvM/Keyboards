@@ -1,9 +1,12 @@
 package KeyboardsGame;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 
+import java.util.Timer;
+import java.util.logging.ConsoleHandler;
 import java.util.stream.Collectors;
 
 public class Game {
@@ -38,17 +41,7 @@ public class Game {
         createPlayers();
 
 
-        System.out.println("Players created:");
-        for (Team team :
-                teams) {
-            System.out.println("In team " + team.getName() + ":");
-            for (Player player :
-                    team.getPlayers()) {
-
-                System.out.println(player.getName());
-            }
-
-        }
+        introducePlayers();
 
         System.out.println();
 
@@ -60,6 +53,42 @@ public class Game {
 
         fillTheBolw();
 
+
+
+        System.out.println("The game will now start when you press Enter");
+        String input ="";
+        if(input.equals("" +
+                "")){
+            Thread.sleep(2500);
+
+            while (!bowl.getBowl().isEmpty()) {
+
+                System.out.println(bowl.randomize(bowl.getBowl().size()));
+
+
+
+            }
+        }
+
+
+
+
+
+
+    }
+
+    private void introducePlayers() {
+        System.out.println("Players created:");
+        for (Team team :
+                teams) {
+            System.out.println("In team " + team.getName() + ":");
+            for (Player player :
+                    team.getPlayers()) {
+
+                System.out.println(player.getName());
+            }
+
+        }
     }
 
     private void createPlayers() {
@@ -88,9 +117,14 @@ public class Game {
         for (int i = 0; i <= teamsCount - 1; i++) {
             System.out.println("Please select team name");
             String teamName = scanner.nextLine();
-            Team team = new Team(teamName);
+            try {
+                Team team = new Team(teamName);
+                teams.add(team);
+            }catch (IllegalArgumentException ex) {
+                System.out.println(ex.getMessage());
 
-            teams.add(team);
+            }
+
         }
     }
 
@@ -107,7 +141,7 @@ public class Game {
         }
     }
 
-    private void playersWriteWords() {
+    private void playersWriteWords() throws InterruptedException {
 
         String[] categoriesArr = {"Animals", "Place", "Object", "Celebrity", "Movies/Series"};
 
@@ -124,12 +158,16 @@ public class Game {
                         player.addWordToList(wordToAdd);
                     }
                 }
+
+
                 System.out.println(player);
                 System.out.printf("%s, are you ready to proceed with the next player?%n", player.getName());
-                String command = scanner.nextLine();
 
-                if (!command.equals("YES!")) {
-                    String commandType = scanner.nextLine();
+                String input = scanner.nextLine();
+
+                while (!input.equals("done")) {
+                String commandType = scanner.nextLine();
+
 
                     if ("Remove word".equals(commandType)) {
                         String wordToRemove = scanner.nextLine();
@@ -140,11 +178,26 @@ public class Game {
                         String wordToReplace = scanner.nextLine();
                         player.addWordToList(wordToReplace);
                     }
+                    input=scanner.nextLine();
                 }
                 System.out.println(player);
+
+                Thread.sleep(3000);
+
+                System.out.println(System.lineSeparator());
+                System.out.println(System.lineSeparator());
+                System.out.println(System.lineSeparator());
+                System.out.println(System.lineSeparator());
+                System.out.println(System.lineSeparator());
+                System.out.println(System.lineSeparator());
+                System.out.println(System.lineSeparator());
+                System.out.println(System.lineSeparator());
+
+            }
+
             }
         }
 
     }
 
-}
+
